@@ -9,15 +9,15 @@ defmodule Member do
   end
 
   def register_file(authority_pid, self_pid, file_id, file_path) do
+    name = String.split(file_path, "/") |> List.last()
+
     parts_count =
       File.stream!(file_path)
       |> Stream.chunk_every(@part_size)
       |> Enum.reduce(0, fn cur, acc ->
-        File.write!("./parts/#{file_path}_part_#{acc}", cur)
+        File.write!("./data/parts/#{name}_part_#{acc}", cur)
         acc + 1
       end)
-
-    name = String.split(file_path, "/") |> List.last()
 
     IO.inspect(parts_count)
 
@@ -35,7 +35,7 @@ defmodule Member do
         rec_data =
           receive do
             {:data, _file_id, part_index, data} ->
-              file_location = "./recv_parts/#{file_id}_part_#{part_index}"
+              file_location = "./data/recv_parts/#{file_id}_part_#{part_index}"
               File.write!(file_location, data)
               [%{index: part_index, file_location: file_location}] ++ rec_data
           end
@@ -117,7 +117,7 @@ defmodule Member do
       {:get_file_part, file_id, part_index, callback_pid} ->
         %{file_name: file_name} = get_in(state, [:files, file_id])
 
-        content = File.read!("./parts/#{file_name}_part_#{part_index}")
+        content = File.read!("./data/parts/#{file_name}_part_#{part_index}")
 
         send(callback_pid, {:data, file_id, part_index, content})
         loop(state)

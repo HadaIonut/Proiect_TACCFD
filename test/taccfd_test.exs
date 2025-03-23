@@ -5,7 +5,7 @@ defmodule BitTorrentTest do
     authority_pid = Authority.start()
     member_pid = Member.start(authority_pid)
 
-    Member.register_file(authority_pid, member_pid, "123", "./testInput.txt")
+    Member.register_file(authority_pid, member_pid, "123", "./data/testInput.txt")
 
     send(authority_pid, {:get_files, self()})
 
@@ -29,7 +29,7 @@ defmodule BitTorrentTest do
     member_pid_list = [member_pid, member_pid_2]
     IO.inspect(member_pid_list)
 
-    Member.register_file(authority_pid, member_pid, "123", "./testInput.txt")
+    Member.register_file(authority_pid, member_pid, "123", "./data/testInput.txt")
 
     send(member_pid_2, {:download_file, "123"})
 

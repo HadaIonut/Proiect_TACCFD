@@ -1,0 +1,11 @@
+digraph ActorGraph {
+  "#PID<0.157.0>" [label="Main"];
+  "#PID<0.158.0>" [label="Worker 1"];
+  "#PID<0.159.0>" [label="Worker 2"];
+  "#PID<0.160.0>" [label="Worker 3"];
+  "#PID<0.161.0>" [label="Worker 4"];
+  "#PID<0.159.0>" -> "#PID<0.161.0>";
+  "#PID<0.157.0>" -> "#PID<0.159.0>";
+  "#PID<0.158.0>" -> "#PID<0.160.0>";
+  "#PID<0.157.0>" -> "#PID<0.158.0>";
+}
